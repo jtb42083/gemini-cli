@@ -335,6 +335,7 @@ export interface ConfigParameters {
   hooks?: {
     [K in HookEventName]?: HookDefinition[];
   };
+  ghaName?: string;
 }
 
 export class Config {
@@ -441,6 +442,7 @@ export class Config {
   private readonly hooks:
     | { [K in HookEventName]?: HookDefinition[] }
     | undefined;
+  private readonly ghaName: string | undefined;
 
   constructor(params: ConfigParameters) {
     this.sessionId = params.sessionId;
@@ -573,6 +575,7 @@ export class Config {
     this.retryFetchErrors = params.retryFetchErrors ?? false;
     this.disableYoloMode = params.disableYoloMode ?? false;
     this.hooks = params.hooks;
+    this.ghaName = params.ghaName;
 
     if (params.contextFileName) {
       setGeminiMdFilename(params.contextFileName);
@@ -957,6 +960,10 @@ export class Config {
 
   getUsageStatisticsEnabled(): boolean {
     return this.usageStatisticsEnabled;
+  }
+
+  getGhaName(): string | undefined {
+    return this.ghaName;
   }
 
   getExperimentalZedIntegration(): boolean {
