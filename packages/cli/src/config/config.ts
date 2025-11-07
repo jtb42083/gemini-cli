@@ -274,23 +274,23 @@ export async function parseArguments(settings: Settings): Promise<CliArgs> {
 
   // Normalize query args: handle both quoted "@path file" and unquoted @path file
   const queryArg = (result as { query?: string | string[] | undefined }).query;
-  const q: string | undefined = Array.isArray(queryArg)
+  const normalizedQuery: string | undefined = Array.isArray(queryArg)
     ? queryArg.join(' ')
     : queryArg;
 
   // Route positional args: explicit -i flag -> interactive; else -> one-shot (even for @commands)
-  if (q && !result['prompt']) {
+  if (normalizedQuery && !result['prompt']) {
     const hasExplicitInteractive =
       result['promptInteractive'] === '' || !!result['promptInteractive'];
     if (hasExplicitInteractive) {
-      result['promptInteractive'] = q;
+      result['promptInteractive'] = normalizedQuery;
     } else {
-      result['prompt'] = q;
+      result['prompt'] = normalizedQuery;
     }
   }
 
   // Keep CliArgs.query as a string for downstream typing
-  (result as Record<string, unknown>)['query'] = q || undefined;
+  (result as Record<string, unknown>)['query'] = normalizedQuery || undefined;
 
   // The import format is now only controlled by settings.memoryImportFormat
   // We no longer accept it as a CLI argument
