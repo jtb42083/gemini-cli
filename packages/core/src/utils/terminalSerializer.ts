@@ -462,12 +462,12 @@ export function convertColorToHex(
   defaultColor: string,
 ): string {
   if (colorMode === ColorMode.RGB) {
-    const r = (color >> 16) & 255;
-    const g = (color >> 8) & 255;
-    const b = color & 255;
-    return `#${r.toString(16).padStart(2, '0')}${g
+    const red = (color >> 16) & 255;
+    const green = (color >> 8) & 255;
+    const blue = color & 255;
+    return `#${red.toString(16).padStart(2, '0')}${green
       .toString(16)
-      .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+      .padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`;
   }
   if (colorMode === ColorMode.PALETTE) {
     return ANSI_COLORS[color] || defaultColor;

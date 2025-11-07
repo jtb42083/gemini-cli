@@ -115,20 +115,20 @@ export function parseX11MouseEvent(
   if (!match) return null;
 
   // The 3 bytes are in match[1]
-  const b = match[1].charCodeAt(0) - 32;
+  const encodedButtonData = match[1].charCodeAt(0) - 32;
   const col = match[1].charCodeAt(1) - 32;
   const row = match[1].charCodeAt(2) - 32;
 
-  const shift = (b & 4) !== 0;
-  const meta = (b & 8) !== 0;
-  const ctrl = (b & 16) !== 0;
-  const isMove = (b & 32) !== 0;
-  const isWheel = (b & 64) !== 0;
+  const shift = (encodedButtonData & 4) !== 0;
+  const meta = (encodedButtonData & 8) !== 0;
+  const ctrl = (encodedButtonData & 16) !== 0;
+  const isMove = (encodedButtonData & 32) !== 0;
+  const isWheel = (encodedButtonData & 64) !== 0;
 
   let name: MouseEventName | null = null;
 
   if (isWheel) {
-    const button = b & 3;
+    const button = encodedButtonData & 3;
     switch (button) {
       case 0:
         name = 'scroll-up';
@@ -142,7 +142,7 @@ export function parseX11MouseEvent(
   } else if (isMove) {
     name = 'move';
   } else {
-    const button = b & 3;
+    const button = encodedButtonData & 3;
     if (button === 3) {
       // X11 reports 'release' (3) for all button releases without specifying which one.
       // We'll default to 'left-release' as a best-effort guess if we don't track state.

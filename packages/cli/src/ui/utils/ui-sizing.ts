@@ -16,8 +16,8 @@ const getMainAreaWidthInternal = (terminalWidth: number): number => {
   }
 
   // Linearly interpolate between 80 columns (98%) and 132 columns (90%).
-  const t = (terminalWidth - 80) / (132 - 80);
-  const percentage = lerp(98, 90, t);
+  const interpolationFactor = (terminalWidth - 80) / (132 - 80);
+  const percentage = lerp(98, 90, interpolationFactor);
 
   return Math.round(percentage * terminalWidth * 0.01);
 };
